@@ -4,8 +4,6 @@ sentiment = function(novel){
 library(tm)
 library(dplyr)
 library(tidytext)
-#load meta data
-#novel <-Corpus(DirSource(directory = "novels//Love_Stories",recursive = TRUE))
 n <-length(novel)
 text = unlist(novel)
 text = text[1:n]
@@ -26,7 +24,7 @@ surprise =  sentiment %>% filter(sentiment %in% "surprise") %>% count(file)
 trust =  sentiment %>% filter(sentiment %in% "trust") %>% count(file)
 
 sentiment_words = data.frame(file= positive$file,positive=positive$n,negative=negative$n,anger=anger$n,anticipation=anticipation$n,disgust=disgust$n,fear=fear$n,joy=joy$n,sadness=sadness$n,trust=trust$n,surprise=surprise$n)
-
+# arrange according to the file name of novels
 index = c(1:n)
 for (i in c(1:n)) {
   index[i] = match(data$file[i],sentiment_words$file)
