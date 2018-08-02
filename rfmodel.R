@@ -8,7 +8,7 @@ library(corpus)
 #load meta data
 meta <-read.csv("pj2.csv")
 meta <-meta[-1]
-novel <-Corpus(DirSource(directory = "novels//Adventure_Stories",recursive = TRUE))
+novel <-Corpus(DirSource(directory = "novels",recursive = TRUE))
 words_per_sent = Average_word_per_sen(novel)
 sentiment_words = sentiment(novel)
 n <-length(novel)
@@ -28,18 +28,18 @@ novel = tm_map(novel,stripWhitespace)
 novel = tm_map(novel,stemDocument)
 
 
-Adventdm = DocumentTermMatrix(novel,control = list(stopwords=TRUE))
-Adventdm = removeSparseTerms(Adventdm,0.999)
+tdm = DocumentTermMatrix(novel,control = list(stopwords=TRUE))
+tdm = removeSparseTerms(tdm,0.999)
 
-freq <-slam::col_sums(Adventdm)
-Adventmat = data.matrix(Adventdm)
-Adventdata <-as.data.frame(Adventmat)
-Adventdata <-rbind(Adventdata,freq)
-nrow <-nrow(Adventdata)
-Advent <-Adventdata[order(Adventdata[nrow,],decreasing = TRUE)]
-Advent <-Advent[1:(nrow-1),]
-Adventdata <-Advent[,1:200]
-data = cbind(Adventdata,words_per_sent,sentiment_words)
+freq = slam::col_sums(tdm)
+matrix = data.matrix(tdm)
+data = as.data.frame(matrix)
+data = rbind(data,freq)
+nrow = nrow(data)
+data = data[order(Adventdata[nrow,],decreasing = TRUE)]
+data = data[1:(nrow-1),]
+data = data[,1:200]
+data = cbind(data,words_per_sent,sentiment_words)
 
 train <-n*0.8
 test <-n*0.2
@@ -55,4 +55,3 @@ y_pred = predict(classifier, newdata = test_set)
 cm = table(actual, y_pred)
 accuracy <-(cm[1,1]+cm[2,2])/(cm[1,1]+cm[1,2]+cm[2,1]+cm[2,2])
 save(classifier,file = "randf")
-load("randf")
