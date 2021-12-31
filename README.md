@@ -6,7 +6,7 @@
 ### Prerequisite
 * R
 * Natural Language Processing
-* Senriment Analysis
+* Sentiment Analysis
 * Random Forest Machine Learning Model
 
 ### Features
